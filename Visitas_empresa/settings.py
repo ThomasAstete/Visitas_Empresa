@@ -72,11 +72,11 @@ WSGI_APPLICATION = 'Visitas_empresa.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DBNAME"),
-        'USER': os.getenv("USER"),
-        'PASSWORD': os.getenv("PASSWORD"),
-        'HOST': os.getenv("HOST"),
-        'PORT': os.getenv("PORT"),
+        'NAME': os.getenv("db_name"),
+        'USER': os.getenv("db_user"),
+        'PASSWORD': os.getenv("db_password"),
+        'HOST': os.getenv("db_host"),
+        'PORT': os.getenv("db_port"),
     }
 }
 
