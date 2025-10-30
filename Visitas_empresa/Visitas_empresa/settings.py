@@ -1,23 +1,4 @@
 """
-CONFIGURACIÓN DE DJANGO - PROYECTO VISITAS_EMPRESA
-
-Sistema de registro de visitas para empresas desarrollado con Django 5.2.6.
-
-CARACTERÍSTICAS IMPLEMENTADAS:
-- Registro de visitantes con validación de RUT chileno
-- Dashboard en tiempo real con estadísticas
-- Manejo de timezones para Chile (America/Santiago)
-- Interfaz responsiva con Tailwind CSS
-- Validación frontend y backend
-- Base de datos SQLite para desarrollo
-- Sistema de check-in/check-out de visitantes
-
-CONFIGURACIONES DESTACADAS:
-- TIME_ZONE = 'America/Santiago': Zona horaria de Chile
-- USE_TZ = True: Soporte completo para timezones
-- LANGUAGE_CODE = 'es-ES': Idioma español
-- DEBUG = True: Modo desarrollo (cambiar a False en producción)
-
 For more information on this file, see
 https://docs.djangoproject.com/en/5.2/topics/settings/
 
@@ -26,21 +7,18 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-5dz&m#)a5&9axk)(o9r9vx%20q39r7-h3@hi^dhp73hwp^qnl('
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".onrender.com"]
 
 
 # Application definition
@@ -131,6 +109,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
