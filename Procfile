@@ -1,1 +1,1 @@
-web: gunicorn Visitas_empresa.wsgi
+web: gunicorn Visitas_empresa.wsgi:application
