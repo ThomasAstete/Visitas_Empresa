@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitas del Día - Empresa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-100 min-h-screen">
+    <header class="bg-white shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-indigo-500 p-3 rounded-lg">
+                        <i class="fas fa-clipboard-list text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Registro de Visitas</h1>
+                        <p class="text-gray-600">Control diario de visitantes</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="bg-blue-100 px-4 py-2 rounded-full text-blue-800 font-medium">
+                        <i class="fas fa-calendar-day mr-2"></i>
+                        {{ current_date }}
+                    </span>
+                    <a href="{% url 'registrar_visita' %}" 
+                        class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition duration-200">
+                        <i class="fas fa-plus mr-2"></i>Nueva Visita
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600">Total Visitas Hoy</p>
+                        <p class="text-3xl font-bold text-gray-800">{{ visitas|length }}</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-users text-blue-500 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600">Visitas Activas</p>
+                        <p class="text-3xl font-bold text-orange-500">
+                            {{ visitas_activas }}
+                        </p>
+                    </div>
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <i class="fas fa-clock text-orange-500 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600">Visitas Completadas</p>
+                        <p class="text-3xl font-bold text-green-500">
+                            {{ visitas_completadas }}
+                        </p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="px-6 py-4 bg-gradient-to-r from-gray-800 to-gray-900">
+                <h2 class="text-xl font-bold text-white">Listado de Visitas del Día</h2>
+            </div>
+            
+            {% if visitas %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="py-4 px-6 text-left font-semibold text-gray-700">Visitante</th>
+                            <th class="py-4 px-6 text-left font-semibold text-gray-700">RUT</th>
+                            <th class="py-4 px-6 text-left font-semibold text-gray-700">Motivo</th>
+                            <th class="py-4 px-6 text-left font-semibold text-gray-700">Hora Entrada (Chile)</th>
+                            <th class="py-4 px-6 text-left font-semibold text-gray-700">Hora Salida (Chile)</th>
+                            <th class="py-4 px-6 text-left font-semibold text-gray-700">Estado</th>
+                            <th class="py-4 px-6 text-left font-semibold text-gray-700">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        {% for visita in visitas %}
+                        <tr class="hover:bg-gray-50 transition duration-150">
+                            <td class="py-4 px-6">
+                                <div class="flex items-center">
+                                    <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                        <i class="fas fa-user text-blue-500"></i>
+                                    </div>
+                                    <span class="font-medium text-gray-800">{{ visita.nombre }}</span>
+                                </div>
+                            </td>
+                            <td class="py-4 px-6 text-gray-600">{{ visita.rut }}</td>
+                            <td class="py-4 px-6 text-gray-600 max-w-xs truncate">{{ visita.motivo }}</td>
+                            <td class="py-4 px-6">
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                                    <span class="hora-chile" data-datetime="{{ visita.hora_entrada|date:'c' }}">
+                                        Cargando...
+                                    </span>
+                                </span>
+                            </td>
+                            <td class="py-4 px-6">
+                                {% if visita.hora_salida %}
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                    <span class="hora-chile" data-datetime="{{ visita.hora_salida|date:'c' }}">
+                                        Cargando...
+                                    </span>
+                                </span>
+                                {% else %}
+                                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-medium">
+                                    Pendiente
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="py-4 px-6">
+                                {% if visita.hora_salida %}
+                                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                    <i class="fas fa-check-circle mr-1"></i>Completada
+                                </span>
+                                {% else %}
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                                    <i class="fas fa-clock mr-1"></i>En curso
+                                </span>
+                                {% endif %}
+                            </td>
+                            <td class="py-4 px-6">
+                                {% if not visita.hora_salida %}
+                                <a href="{% url 'registrar_salida' visita.id %}" 
+                                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 transform hover:scale-105">
+                                    <i class="fas fa-door-open mr-1"></i>Registrar Salida
+                                </a>
+                                {% else %}
+                                <span class="text-green-600 text-sm font-medium">
+                                    <i class="fas fa-check mr-1"></i>Finalizada
+                                </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-12">
+                <div class="bg-gray-100 p-6 rounded-full inline-block mb-4">
+                    <i class="fas fa-clipboard-list text-gray-400 text-4xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">No hay visitas registradas hoy</h3>
+                <p class="text-gray-500 mb-6">Comienza registrando la primera visita del día</p>
+                <a href="{% url 'registrar_visita' %}" 
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition duration-200">
+                    <i class="fas fa-plus mr-2"></i>Registrar Primera Visita
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <!-- JavaScript para convertir horas a hora de Chile -->
+    <script>
+        function convertirAHoraChile(elementos) {
+            elementos.forEach(elemento => {
+                const fechaUTC = elemento.getAttribute('data-datetime');
+                if (fechaUTC) {
+                    const fecha = new Date(fechaUTC);
+                    
+                    // Convertir a hora de Chile (UTC-3 o UTC-4)
+                    const opciones = { 
+                        timeZone: 'America/Santiago',
+                        hour12: false,
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    };
+                    
+                    const horaChile = fecha.toLocaleTimeString('es-CL', opciones);
+                    elemento.textContent = horaChile;
+                }
+            });
+        }
+        
+        // Convertir todas las horas al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            const horasChile = document.querySelectorAll('.hora-chile');
+            convertirAHoraChile(horasChile);
+        });
+    </script>
+
+</body>
+</html>
