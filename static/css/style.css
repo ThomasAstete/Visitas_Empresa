@@ -1,0 +1,10 @@
+/* Archivo placeholder de estilos para el proyecto VisitasEmpresa */
+:root{
+    --brand-blue: #2563eb;
+}
+body{
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+/* Añade aquí tus estilos personalizados */
