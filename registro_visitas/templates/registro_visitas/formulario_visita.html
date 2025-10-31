@@ -59,8 +59,8 @@ Tecnologías utilizadas:
             <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-8">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h2 class="text-3xl font-bold text-white mb-2">Registro de Visita</h2>
-                        <p class="text-blue-100">Complete los datos del visitante</p>
+                        <h2 class="text-3xl font-bold text-white mb-2">{% if edit %}Editar Visita{% else %}Registro de Visita{% endif %}</h2>
+                        <p class="text-blue-100">{% if edit %}Modifique los datos y guarde los cambios{% else %}Complete los datos del visitante{% endif %}</p>
                     </div>
                     <div class="bg-white/20 p-4 rounded-full">
                         <i class="fas fa-user-plus text-white text-2xl"></i>
@@ -85,6 +85,9 @@ Tecnologías utilizadas:
                 <form method="post" class="space-y-6">
                     <!-- CSRF TOKEN: Protección contra ataques Cross-Site Request Forgery -->
                     {% csrf_token %}
+                    {% if edit %}
+                    <input type="hidden" name="visita_id" value="{{ visita_id }}">
+                    {% endif %}
                     
                     <!-- CAMPO: Nombre completo del visitante -->
                     <div class="space-y-2">
@@ -153,7 +156,7 @@ Tecnologías utilizadas:
                     <button type="submit" 
                         class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-lg transition duration-200 transform hover:scale-105">
                         <i class="fas fa-check-circle mr-2"></i>
-                        Registrar Entrada
+                        {% if edit %}Actualizar Visita{% else %}Registrar Entrada{% endif %}
                     </button>
                 </form>
 

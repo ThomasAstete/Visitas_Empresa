@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from .models import Visita
 
@@ -75,6 +75,9 @@ def registrar_visita(request):
     Vista para registrar nuevas visitas.
     GET: muestra formulario, POST: procesa datos
     """
+    # Fecha actual para mostrar en los templates
+    current_date = timezone.localdate()
+
     if request.method == 'POST':
         # Obtener datos del formulario
         nombre = request.POST.get('nombre')
@@ -100,7 +103,9 @@ def registrar_visita(request):
                 return render(request, 'registro_visitas/formulario_visita.html', {
                     'error': mensaje_error,
                     'nombre_previo': nombre,
-                    'motivo_previo': motivo
+                    'rut_previo': rut,
+                    'motivo_previo': motivo,
+                    'current_date': current_date,
                 })
         else:
             # Error por campos faltantes
@@ -112,7 +117,9 @@ def registrar_visita(request):
             })
 
     # Mostrar formulario vacío (GET)
-    return render(request, 'registro_visitas/formulario_visita.html')
+    return render(request, 'registro_visitas/formulario_visita.html', {
+        'current_date': current_date
+    })
 
 def lista_visitas(request):
     """
@@ -133,6 +140,7 @@ def lista_visitas(request):
         'visitas': visitas,
         'visitas_activas': visitas_activas,
         'visitas_completadas': visitas_completadas
+        , 'current_date': hoy
     })
 
 def registrar_salida(request, visita_id):
@@ -149,3 +157,67 @@ def registrar_salida(request, visita_id):
     
     # Redirigir al listado
     return redirect('lista_visitas')
+
+
+def editar_visita(request, visita_id):
+    """
+    Editar una visita existente (nombre, rut, motivo).
+    """
+    visita = get_object_or_404(Visita, id=visita_id)
+    current_date = timezone.localdate()
+
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        rut = request.POST.get('rut')
+        motivo = request.POST.get('motivo')
+
+        if nombre and rut and motivo:
+            rut_valido, mensaje_error = validar_rut(rut)
+            if not rut_valido:
+                return render(request, 'registro_visitas/formulario_visita.html', {
+                    'error': mensaje_error,
+                    'nombre_previo': nombre,
+                    'rut_previo': rut,
+                    'motivo_previo': motivo,
+                    'edit': True,
+                    'visita_id': visita.id,
+                    'current_date': current_date,
+                })
+
+            # Validación de consistencia de horarios: no permitir que hora_salida < hora_entrada
+            if visita.hora_salida and visita.hora_salida < visita.hora_entrada:
+                visita.hora_salida = visita.hora_entrada
+
+            visita.nombre = nombre
+            visita.rut = rut
+            visita.motivo = motivo
+
+            # Asignar usuario si está autenticado
+            try:
+                if request.user.is_authenticated and not visita.usuario:
+                    visita.usuario = request.user
+            except Exception:
+                pass
+
+            visita.save()
+            return redirect('lista_visitas')
+        else:
+            return render(request, 'registro_visitas/formulario_visita.html', {
+                'error': 'Todos los campos son obligatorios.',
+                'nombre_previo': nombre,
+                'rut_previo': rut,
+                'motivo_previo': motivo,
+                'edit': True,
+                'visita_id': visita.id,
+                'current_date': current_date,
+            })
+
+    # GET: rellenar formulario con datos existentes
+    return render(request, 'registro_visitas/formulario_visita.html', {
+        'nombre_previo': visita.nombre,
+        'rut_previo': visita.rut,
+        'motivo_previo': visita.motivo,
+        'edit': True,
+        'visita_id': visita.id,
+        'current_date': current_date,
+    })
