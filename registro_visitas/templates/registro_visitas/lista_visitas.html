@@ -141,16 +141,24 @@
                                 {% endif %}
                             </td>
                             <td class="py-4 px-6">
-                                {% if not visita.hora_salida %}
-                                <a href="{% url 'registrar_salida' visita.id %}" 
-                                    class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 transform hover:scale-105">
-                                    <i class="fas fa-door-open mr-1"></i>Registrar Salida
-                                </a>
-                                {% else %}
-                                <span class="text-green-600 text-sm font-medium">
-                                    <i class="fas fa-check mr-1"></i>Finalizada
-                                </span>
-                                {% endif %}
+                                <div class="flex items-center space-x-2">
+                                    {% if not visita.hora_salida %}
+                                    <a href="{% url 'registrar_salida' visita.id %}" 
+                                        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 transform hover:scale-105">
+                                        <i class="fas fa-door-open mr-1"></i>Registrar Salida
+                                    </a>
+                                    {% else %}
+                                    <span class="text-green-600 text-sm font-medium">
+                                        <i class="fas fa-check mr-1"></i>Finalizada
+                                    </span>
+                                    {% endif %}
+
+                                    <!-- Editar visita (CRUD) -->
+                                    <a href="{% url 'editar_visita' visita.id %}"
+                                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition duration-200">
+                                        <i class="fas fa-edit mr-1"></i>Editar
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         {% endfor %}

@@ -91,11 +91,19 @@ def registrar_visita(request):
             
             if rut_valido:
                 # Crear registro en BD
-                Visita.objects.create(
-                    nombre=nombre,
-                    rut=rut,
-                    motivo=motivo
-                )
+                if request.user.is_authenticated:
+                    Visita.objects.create(
+                        nombre=nombre,
+                        rut=rut,
+                        motivo=motivo,
+                        usuario=request.user,
+                    )
+                else:
+                    Visita.objects.create(
+                        nombre=nombre,
+                        rut=rut,
+                        motivo=motivo,
+                    )
                 # Redirigir al listado
                 return redirect('lista_visitas')
             else:
@@ -113,7 +121,8 @@ def registrar_visita(request):
                 'error': 'Todos los campos son obligatorios.',
                 'nombre_previo': nombre,
                 'rut_previo': rut,
-                'motivo_previo': motivo
+                'motivo_previo': motivo,
+                'current_date': current_date,
             })
 
     # Mostrar formulario vacío (GET)
