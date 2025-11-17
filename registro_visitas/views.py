@@ -5,7 +5,6 @@ from django.contrib.auth.models import Group, User
 from rest_framework import permissions, viewsets
 
 from .serializers import GroupSerializer, UserSerializer, VisitaSerializer
-from rest_framework import permissions
 
 class VisitaViewSet(viewsets.ModelViewSet):
     queryset = Visita.objects.all().order_by("nombre")
@@ -194,7 +193,6 @@ def registrar_salida(request, visita_id):
     
     # Redirigir al listado
     return redirect('lista_visitas')
-
 
 def editar_visita(request, visita_id):
     """
