@@ -67,7 +67,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Visitas_empresa.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    "https://visitas-lectura.vercel.app",
+    "visitas-lectura.vercel.app/",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
