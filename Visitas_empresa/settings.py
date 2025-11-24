@@ -21,7 +21,7 @@ SECRET_KEY = 'django-insecure-5dz&m#)a5&9axk)(o9r9vx%20q39r7-h3@hi^dhp73hwp^qnl(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".onrender.com", "127.0.0.1"]
+ALLOWED_HOSTS = [".onrender.com", "127.0.0.1", ".herokuapp.com"]
 
 
 # Application definition
@@ -86,23 +86,23 @@ WSGI_APPLICATION = 'Visitas_empresa.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv("db_name"),
-#         'USER': os.getenv("db_user"),
-#         'PASSWORD': os.getenv("db_password"),
-#         'HOST': os.getenv("db_host"),
-#         'PORT': os.getenv("db_port"),
-#     }
-# }
-
 DATABASES = {
-    "default": {
-        "ENGINE" : "django.db.backends.sqlite3",
-        "NAME" : "db.sqlite3",
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql',
+         'NAME': os.getenv("db_name"),
+         'USER': os.getenv("db_user"),
+         'PASSWORD': os.getenv("db_password"),
+         'HOST': os.getenv("db_host"),
+         'PORT': os.getenv("db_port"),
     }
 }
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE" : "django.db.backends.sqlite3",
+#         "NAME" : "db.sqlite3",
+#     }
+# }
 
 
 # Password validation
