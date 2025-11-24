@@ -21,7 +21,7 @@ SECRET_KEY = 'django-insecure-5dz&m#)a5&9axk)(o9r9vx%20q39r7-h3@hi^dhp73hwp^qnl(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".onrender.com", "127.0.0.1", ".herokuapp.com"]
+ALLOWED_HOSTS = [".onrender.com", "127.0.0.1", ".vercel.app"]
 
 
 # Application definition
@@ -67,7 +67,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Visitas_empresa.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    "https://visitas-api-83b1ca9a4884.herokuapp.com",
+    "https://visitas-lectura.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
