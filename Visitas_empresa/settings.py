@@ -21,7 +21,7 @@ SECRET_KEY = 'django-insecure-5dz&m#)a5&9axk)(o9r9vx%20q39r7-h3@hi^dhp73hwp^qnl(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".onrender.com", "127.0.0.1", ".vercel.app"]
+ALLOWED_HOSTS = [".onrender.com", "127.0.0.1"]
 
 
 # Application definition
@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'registro_visitas',
     'corsheaders',
-    'rest_framework'
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 REST_FRAMEWORK = {
@@ -67,7 +68,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'Visitas_empresa.urls'
 
 CORS_ALLOWED_ORIGINS = [
-    "visitas-lectura.vercel.app/",
+    "https://visitas-lectura.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
